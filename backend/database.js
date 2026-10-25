@@ -125,8 +125,10 @@ module.exports = {
 
   // Rankings
   insertRanking: (ranking) => {
+    // Delete existing ranking for this person first, then insert fresh
+    db.prepare('DELETE FROM rankings WHERE person_id = ?').run(ranking.person_id);
     const stmt = db.prepare(`
-      INSERT OR REPLACE INTO rankings (id, person_id, ranked_matches)
+      INSERT INTO rankings (id, person_id, ranked_matches)
       VALUES (@id, @person_id, @ranked_matches)
     `);
     return stmt.run({
@@ -138,12 +140,13 @@ module.exports = {
   getRanking: (personId) => {
     const row = db.prepare('SELECT * FROM rankings WHERE person_id = ?').get(personId);
     if (!row) return null;
-    return { ...row, ranked_matches: JSON.parse(row.ranked_matches || '[]') };
+    const matches = safeJSONArray(row.ranked_matches);
+    return { ...row, ranked_matches: matches };
   },
 
   getAllRankings: () => {
-    const rows = db.prepare('SELECT * FROM rankings').all();
-    return rows.map(r => ({ ...r, ranked_matches: JSON.parse(r.ranked_matches || '[]') }));
+    const rows = db.prepare('SELECT * FROM rankings ORDER BY created_at DESC').all();
+    return rows.map(r => ({ ...r, ranked_matches: safeJSONArray(r.ranked_matches) }));
   },
 };
 
@@ -158,4 +161,12 @@ function parsePerson(row) {
 
 function safeJSON(str) {
   try { return JSON.parse(str || '{}'); } catch { return {}; }
+}
+
+function safeJSONArray(str) {
+  if (!str || str === '' || str === 'null') return [];
+  try {
+    const parsed = JSON.parse(str);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch { return []; }
 }

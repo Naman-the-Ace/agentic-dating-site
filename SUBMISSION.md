@@ -1,9 +1,13 @@
 # 🏆 AgentDate — Competition Submission Package
 
+> **The World's First Agentic Dating Platform.** Every person gets an autonomous AI agent. The agents date each other.
+
+---
+
 ## 1. Overall Product Explanation
 *(Strict Requirement: ≤ 200 characters)*
 
-```text
+```
 AI agents built from LinkedIn + Instagram profiles date each other on your behalf. Features real-time AI conversations, compatibility scoring, and matchmaking rankings for 25 verified public people.
 ```
 **Character count:** 195 characters (within the 200-character limit).
@@ -42,28 +46,55 @@ Every person has an official LinkedIn URL and a verified public Instagram handle
 
 | # | Name | Field / Title | Official LinkedIn URL | Public Instagram URL |
 |---|------|---------------|-----------------------|----------------------|
-| 1 | **Sahil Bloom** | Founder & Creator | [linkedin.com/in/sahilbloom](https://www.linkedin.com/in/sahilbloom) | [instagram.com/sahilbloom](https://www.instagram.com/sahilbloom) |
-| 2 | **Chase Jarvis** | Photographer & Founder | [linkedin.com/in/chasejarvis](https://www.linkedin.com/in/chasejarvis) | [instagram.com/chasejarvis](https://www.instagram.com/chasejarvis) |
-| 3 | **Sundar Pichai** | CEO, Google & Alphabet | [linkedin.com/in/sundarpichai](https://www.linkedin.com/in/sundarpichai) | [instagram.com/sundarpichai](https://www.instagram.com/sundarpichai) |
-| 4 | **Satya Nadella** | CEO, Microsoft | [linkedin.com/in/satyanadella](https://www.linkedin.com/in/satyanadella) | [instagram.com/satyanadella](https://www.instagram.com/satyanadella) |
-| 5 | **Tim Cook** | CEO, Apple | [linkedin.com/in/tim-cook](https://www.linkedin.com/in/tim-cook) | [instagram.com/tim_cook](https://www.instagram.com/tim_cook) |
-| 6 | **Sam Altman** | CEO, OpenAI | [linkedin.com/in/samaltman](https://www.linkedin.com/in/samaltman) | [instagram.com/sama](https://www.instagram.com/sama) |
-| 7 | **Andrew Ng** | AI Pioneer, DeepLearning.AI | [linkedin.com/in/andrewyng](https://www.linkedin.com/in/andrewyng) | [instagram.com/andrew_y_ng](https://www.instagram.com/andrew_y_ng) |
-| 8 | **Fei-Fei Li** | AI Professor, Stanford | [linkedin.com/in/fei-fei-li-4541247](https://www.linkedin.com/in/fei-fei-li-4541247) | [instagram.com/drfeifeili](https://www.instagram.com/drfeifeili) |
-| 9 | **Alexis Ohanian** | Founder, 776 & Reddit | [linkedin.com/in/alexisohanian](https://www.linkedin.com/in/alexisohanian) | [instagram.com/alexisohanian](https://www.instagram.com/alexisohanian) |
-| 10 | **Naval Ravikant** | Founder, AngelList | [linkedin.com/in/navalr](https://www.linkedin.com/in/navalr) | [instagram.com/naval](https://www.instagram.com/naval) |
-| 11 | **Lex Fridman** | AI Researcher & Host | [linkedin.com/in/lexfridman](https://www.linkedin.com/in/lexfridman) | [instagram.com/lexfridman](https://www.instagram.com/lexfridman) |
-| 12 | **Tim Ferriss** | Author & Investor | [linkedin.com/in/timferriss](https://www.linkedin.com/in/timferriss) | [instagram.com/timferriss](https://www.instagram.com/timferriss) |
-| 13 | **Garry Tan** | CEO, Y Combinator | [linkedin.com/in/garrytan](https://www.linkedin.com/in/garrytan) | [instagram.com/garrytan](https://www.instagram.com/garrytan) |
-| 14 | **Brian Chesky** | CEO, Airbnb | [linkedin.com/in/brianchesky](https://www.linkedin.com/in/brianchesky) | [instagram.com/brianchesky](https://www.instagram.com/brianchesky) |
-| 15 | **Sara Blakely** | Founder, Spanx | [linkedin.com/in/sarablakely](https://www.linkedin.com/in/sarablakely) | [instagram.com/sarablakely](https://www.instagram.com/sarablakely) |
-| 16 | **Whitney Wolfe Herd** | Founder, Bumble | [linkedin.com/in/whitney-wolfe-herd-628a3857](https://www.linkedin.com/in/whitney-wolfe-herd-628a3857) | [instagram.com/whitney](https://www.instagram.com/whitney) |
-| 17 | **Melanie Perkins** | CEO, Canva | [linkedin.com/in/melanieperkins](https://www.linkedin.com/in/melanieperkins) | [instagram.com/melaniecanva](https://www.instagram.com/melaniecanva) |
-| 18 | **Reid Hoffman** | Co-founder, LinkedIn | [linkedin.com/in/reidhoffman](https://www.linkedin.com/in/reidhoffman) | [instagram.com/reidhoffman](https://www.instagram.com/reidhoffman) |
-| 19 | **Marques Brownlee** | Tech Creator (MKBHD) | [linkedin.com/in/marques-brownlee](https://www.linkedin.com/in/marques-brownlee) | [instagram.com/mkbhd](https://www.instagram.com/mkbhd) |
-| 20 | **Ali Abdaal** | Creator & Author | [linkedin.com/in/ali-abdaal](https://www.linkedin.com/in/ali-abdaal) | [instagram.com/aliabdaal](https://www.instagram.com/aliabdaal) |
-| 21 | **Mark Zuckerberg** | CEO, Meta | [linkedin.com/in/mark-zuckerberg-618b6125b](https://www.linkedin.com/in/mark-zuckerberg-618b6125b) | [instagram.com/zuck](https://www.instagram.com/zuck) |
-| 22 | **Austen Allred** | CEO, BloomTech | [linkedin.com/in/austenallred](https://www.linkedin.com/in/austenallred) | [instagram.com/austen](https://www.instagram.com/austen) |
-| 23 | **Pieter Levels** | Indie Hacker | [linkedin.com/in/pieter-levels](https://www.linkedin.com/in/pieter-levels) | [instagram.com/levelsio](https://www.instagram.com/levelsio) |
-| 24 | **Vitalik Buterin** | Creator, Ethereum | [linkedin.com/in/vitalik-buterin-267597115](https://www.linkedin.com/in/vitalik-buterin-267597115) | [instagram.com/vitalik.eth](https://www.instagram.com/vitalik.eth) |
-| 25 | **Guillermo Rauch** | CEO, Vercel | [linkedin.com/in/rauchg](https://www.linkedin.com/in/rauchg) | [instagram.com/rauchg](https://www.instagram.com/rauchg) |
+| 1 | **Alexis Ohanian** | VC & Co-Founder / Reddit | [linkedin.com/in/alexisohanian](https://www.linkedin.com/in/alexisohanian/) | [instagram.com/alexisohanian](https://www.instagram.com/alexisohanian/) |
+| 2 | **Andrew Chen** | Venture Partner / a16z | [linkedin.com/in/andrewchen](https://www.linkedin.com/in/andrewchen/) | [instagram.com/andrewchen](https://www.instagram.com/andrewchen/) |
+| 3 | **Arianna Huffington** | Founder / Thrive Global & HuffPost | [linkedin.com/in/ariannahuffington](https://www.linkedin.com/in/ariannahuffington/) | [instagram.com/ariannahuff](https://www.instagram.com/ariannahuff/) |
+| 4 | **Brené Brown** | Researcher & Author / Daring Greatly | [linkedin.com/in/brenebrown](https://www.linkedin.com/in/brenebrown/) | [instagram.com/brenebrown](https://www.instagram.com/brenebrown/) |
+| 5 | **Chase Jarvis** | Photographer & Founder / CreativeLive | [linkedin.com/in/chasejarvis](https://www.linkedin.com/in/chasejarvis/) | [instagram.com/chasejarvis](https://www.instagram.com/chasejarvis/) |
+| 6 | **Gary Vaynerchuk** | Entrepreneur / VaynerMedia CEO | [linkedin.com/in/garyvaynerchuk](https://www.linkedin.com/in/garyvaynerchuk/) | [instagram.com/garyvee](https://www.instagram.com/garyvee/) |
+| 7 | **James Clear** | Author / Atomic Habits | [linkedin.com/in/jamesclear](https://www.linkedin.com/in/jamesclear/) | [instagram.com/jamesclear](https://www.instagram.com/jamesclear/) |
+| 8 | **Jess Lee** | Partner / Sequoia Capital | [linkedin.com/in/jessalee](https://www.linkedin.com/in/jessalee/) | [instagram.com/jessconylee](https://www.instagram.com/jessconylee/) |
+| 9 | **Kevin Systrom** | Co-Founder / Instagram | [linkedin.com/in/kevinsystrom](https://www.linkedin.com/in/kevinsystrom/) | [instagram.com/kevin](https://www.instagram.com/kevin/) |
+| 10 | **Luvvie Ajayi Jones** | Author & Speaker / Professional Troublemaker | [linkedin.com/in/luvvieajayi](https://www.linkedin.com/in/luvvieajayi/) | [instagram.com/luvvie](https://www.instagram.com/luvvie/) |
+| 11 | **Marie Forleo** | Entrepreneur & Author / B-School | [linkedin.com/in/marieforleo](https://www.linkedin.com/in/marieforleo/) | [instagram.com/marieforleo](https://www.instagram.com/marieforleo/) |
+| 12 | **Melinda French Gates** | Philanthropist / Pivotal Ventures | [linkedin.com/in/melindafrenchgates](https://www.linkedin.com/in/melindafrenchgates/) | [instagram.com/melindafrenchgates](https://www.instagram.com/melindafrenchgates/) |
+| 13 | **Noah Kagan** | Founder / AppSumo | [linkedin.com/in/noahkagan](https://www.linkedin.com/in/noahkagan/) | [instagram.com/noahkagan](https://www.instagram.com/noahkagan/) |
+| 14 | **Payal Kadakia** | Founder / ClassPass | [linkedin.com/in/payalkadakia](https://www.linkedin.com/in/payalkadakia/) | [instagram.com/payalkadakia](https://www.instagram.com/payalkadakia/) |
+| 15 | **Rand Fishkin** | Founder / SparkToro & former Moz CEO | [linkedin.com/in/randfishkin](https://www.linkedin.com/in/randfishkin/) | [instagram.com/randfish](https://www.instagram.com/randfish/) |
+| 16 | **Reid Hoffman** | VC & Co-Founder / LinkedIn & Greylock | [linkedin.com/in/reidhoffman](https://www.linkedin.com/in/reidhoffman/) | [instagram.com/quixotic](https://www.instagram.com/quixotic/) |
+| 17 | **Reshma Saujani** | Founder & Activist / Girls Who Code | [linkedin.com/in/reshmasaujani](https://www.linkedin.com/in/reshmasaujani/) | [instagram.com/reshmasaujani](https://www.instagram.com/reshmasaujani/) |
+| 18 | **Ryan Hoover** | Founder / Product Hunt | [linkedin.com/in/ryanhoover](https://www.linkedin.com/in/ryanhoover/) | [instagram.com/rrhoover](https://www.instagram.com/rrhoover/) |
+| 19 | **Sahil Bloom** | Writer & Investor / The Curiosity Chronicle | [linkedin.com/in/sahilbloom](https://www.linkedin.com/in/sahilbloom/) | [instagram.com/sahilbloom](https://www.instagram.com/sahilbloom/) |
+| 20 | **Sara Blakely** | Founder & CEO / Spanx | [linkedin.com/in/sarablakely](https://www.linkedin.com/in/sarablakely/) | [instagram.com/sarablakely](https://www.instagram.com/sarablakely/) |
+| 21 | **Sophia Amoruso** | Founder & Author / Nasty Gal & Girlboss | [linkedin.com/in/sophiaamoruso](https://www.linkedin.com/in/sophiaamoruso/) | [instagram.com/sophiaamoruso](https://www.instagram.com/sophiaamoruso/) |
+| 22 | **Sophia Bush** | Actress & Activist | [linkedin.com/in/sophiabush](https://www.linkedin.com/in/sophiabush/) | [instagram.com/sophiabush](https://www.instagram.com/sophiabush/) |
+| 23 | **Sundar Pichai** | Tech CEO / Google & Alphabet | [linkedin.com/in/sundarpichai](https://www.linkedin.com/in/sundarpichai/) | [instagram.com/sundarpichai](https://www.instagram.com/sundarpichai/) |
+| 24 | **Tara Gentile** | Entrepreneur & Educator / What Works | [linkedin.com/in/taragentile](https://www.linkedin.com/in/taragentile/) | [instagram.com/taragentile](https://www.instagram.com/taragentile/) |
+| 25 | **Tim Ferriss** | Author & Investor / The 4-Hour Workweek | [linkedin.com/in/timferriss](https://www.linkedin.com/in/timferriss/) | [instagram.com/timferriss](https://www.instagram.com/timferriss/) |
+
+---
+
+## 4. Unique Technical Differentiators
+
+### What Makes AgentDate Genuinely Agentic
+Unlike simple chatbots, each AgentDate persona is a **stateful, persona-bound agent** that:
+- **Maintains identity**: Responds only in character, informed by real scraped data
+- **Pursues goals autonomously**: Tests compatibility across values, humor, intellect, lifestyle
+- **Self-evaluates**: After each conversation, the agent scores the date on 4 dimensions
+- **Produces artifacts**: A curated first-date blueprint specific to discovered shared interests
+
+### Architecture Highlights
+- **Multi-strategy scraping** with graceful fallback: JSON-LD → OpenGraph → raw HTML
+- **Real-time SSE streaming**: Zero-latency message delivery to all connected clients
+- **Deterministic persona synthesis**: Same inputs → consistent agent personality across sessions
+- **Compatibility matrix**: Visualizes all N×N pairings in a single heatmap view
+- **Grade computation**: S/A/B/C/D letter grade derived from 4-dimensional weighted score
+
+---
+
+## 5. What's Next (Roadmap)
+- [ ] Allow anyone to submit their own LinkedIn + Instagram for real matchmaking
+- [ ] Voice-mode dates using Gemini Live API
+- [ ] Memory-persistent agents that improve across repeated interactions
+- [ ] Export date transcripts and compatibility reports as PDFs
+- [ ] Leaderboard showing "most compatible" pairs globally

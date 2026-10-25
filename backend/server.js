@@ -359,6 +359,14 @@ app.post('/api/date-all', async (req, res) => {
 });
 
 // ── Rankings ──────────────────────────────────────────────────────────────────
+function computeGrade(score) {
+  if (score >= 90) return 'S';
+  if (score >= 80) return 'A';
+  if (score >= 65) return 'B';
+  if (score >= 50) return 'C';
+  return 'D';
+}
+
 async function generateAllRankings() {
   const people = db.getAllPeople();
   const allConversations = db.getAllConversations();
@@ -376,18 +384,21 @@ async function generateAllRankings() {
         compatibility = JSON.parse(conv.compatibility_reason || '{}');
       } catch {}
       
+      const score = conv.compatibility_score || 0;
       return {
         person_id: otherId,
         person_name: other?.analysis?.name || other?.name || 'Unknown',
         person_avatar: other?.avatar_url || '',
         person_vibe: other?.analysis?.vibe || '',
         person_tagline: other?.analysis?.tagline || '',
-        score: conv.compatibility_score || 0,
-        grade: compatibility.grade || 'C',
+        score,
+        grade: computeGrade(score),
         verdict: compatibility.verdict || '',
         reason: compatibility.reason || '',
         chemistry_score: compatibility.chemistry_score || 0,
         values_alignment: compatibility.values_alignment || 0,
+        communication_fit: compatibility.communication_fit || 0,
+        lifestyle_match: compatibility.lifestyle_match || 0,
         first_date_idea: compatibility.first_date_idea || '',
         long_term_potential: compatibility.long_term_potential || 'medium',
       };
