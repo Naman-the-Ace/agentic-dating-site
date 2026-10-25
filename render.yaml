@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: agentdate
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend && node backend/seed.js
+    startCommand: NODE_ENV=production node backend/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GEMINI_API_KEY
+        sync: false
+    healthCheckPath: /api/health

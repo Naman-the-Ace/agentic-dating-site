@@ -1,5 +1,7 @@
 // server.js — Main Express server
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const express = require('express');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
@@ -8,11 +10,28 @@ const { scrapeLinkedIn, scrapeInstagram } = require('./scraper');
 const { analyzePerson, runDatingConversation, calculateCompatibility } = require('./agent');
 const { PEOPLE_LIST } = require('./people');
 
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+// In production, serve static files from frontend/dist
+const DIST_DIR = path.join(__dirname, '..', 'frontend', 'dist');
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+
+// Auto-seed bundled dataset if database is fresh or empty
+try {
+  const currentPeople = db.getAllPeople();
+  if (!currentPeople || currentPeople.length < 25) {
+    console.log(`⚡ Fresh database detected (${currentPeople ? currentPeople.length : 0} people). Auto-seeding bundled dataset...`);
+    require('./seed');
+  }
+} catch (seedErr) {
+  console.log('Auto-seed check notification:', seedErr.message);
+}
+
 
 // SSE clients for real-time updates
 const sseClients = new Map();
@@ -74,6 +93,32 @@ app.post('/api/people', async (req, res) => {
   const { linkedin_url, instagram_url, name } = req.body;
   if (!linkedin_url || !instagram_url) {
     return res.status(400).json({ success: false, error: 'LinkedIn and Instagram URLs are required' });
+  }
+
+  // Validate URL format
+  const isLinkedInValid = typeof linkedin_url === 'string' && (linkedin_url.includes('linkedin.com') || linkedin_url.startsWith('http'));
+  const isInstagramValid = typeof instagram_url === 'string' && (instagram_url.includes('instagram.com') || instagram_url.startsWith('@') || instagram_url.startsWith('http'));
+
+  if (!isLinkedInValid || !isInstagramValid) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'Invalid profile URL format: please provide valid LinkedIn and Instagram profile URLs' 
+    });
+  }
+
+  // Check for duplicate profile
+  const allPeople = db.getAllPeople();
+  const existing = allPeople.find(p => 
+    (p.linkedin_url && p.linkedin_url.toLowerCase().trim() === linkedin_url.toLowerCase().trim()) ||
+    (p.instagram_url && p.instagram_url.toLowerCase().trim() === instagram_url.toLowerCase().trim())
+  );
+  if (existing) {
+    return res.status(200).json({
+      success: true,
+      duplicate: true,
+      message: `${existing.name || 'Profile'} already exists in the database.`,
+      data: { id: existing.id, status: 'ready', person: existing }
+    });
   }
 
   const id = uuidv4();
@@ -146,13 +191,24 @@ app.delete('/api/people/:id', (req, res) => {
 // ── Load pre-configured 25 people ────────────────────────────────────────────
 app.post('/api/load-demo', async (req, res) => {
   try {
-    res.json({ success: true, message: 'Loading 25 demo people...' });
-    
-    // Process them in batches to avoid rate limits
     const batch = PEOPLE_LIST.slice(0, 25);
+    const existing = db.getAllPeople();
+    const existingUrls = new Set(existing.map(p => p.linkedin_url));
     
-    for (let i = 0; i < batch.length; i++) {
-      const person = batch[i];
+    const toLoad = batch.filter(p => !existingUrls.has(p.linkedin));
+    const alreadyLoaded = batch.length - toLoad.length;
+    
+    res.json({ 
+      success: true, 
+      message: `Queuing ${toLoad.length} new people (${alreadyLoaded} already loaded)...`,
+      already_loaded: alreadyLoaded,
+      queuing: toLoad.length,
+    });
+    
+    if (toLoad.length === 0) return;
+    
+    for (let i = 0; i < toLoad.length; i++) {
+      const person = toLoad[i];
       const id = uuidv4();
       
       db.insertPerson({
@@ -166,9 +222,9 @@ app.post('/api/load-demo', async (req, res) => {
         avatar_url: '',
       });
 
-      broadcastSSE({ type: 'demo_progress', index: i + 1, total: batch.length, name: person.name, id });
+      broadcastSSE({ type: 'demo_progress', index: i + 1, total: toLoad.length, name: person.name, id });
 
-      // Process each person
+      // Process each person asynchronously
       setImmediate(async () => {
         try {
           const [linkedinResult, instagramResult] = await Promise.allSettled([
@@ -205,6 +261,7 @@ app.post('/api/load-demo', async (req, res) => {
     console.error('Demo load error:', err.message);
   }
 });
+
 
 // ── Dating endpoints ─────────────────────────────────────────────────────────
 app.get('/api/conversations', (req, res) => {
@@ -452,9 +509,27 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`\n🚀 Agentic Dating Site Backend running on http://localhost:${PORT}`);
+// ── Production static file serving ───────────────────────────────────────────
+// This MUST come AFTER all /api/* routes
+const fs = require('fs');
+if (fs.existsSync(DIST_DIR)) {
+  app.use(express.static(DIST_DIR));
+  // SPA fallback: serve index.html for all non-API routes (React Router)
+  // Express 5 requires named wildcard params — use /*splat
+  app.get('/*splat', (req, res) => {
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ success: false, error: 'API route not found' });
+    }
+    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  });
+  console.log(`📁 Serving React build from ${DIST_DIR}`);
+} else {
+  console.log(`⚠️  No frontend/dist found. Run: cd frontend && npm run build`);
+}
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🚀 AgentDate running on port ${PORT}`);
   console.log(`📊 Health: http://localhost:${PORT}/api/health`);
   console.log(`👥 People: http://localhost:${PORT}/api/people`);
-  console.log(`\n${process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'AIzaSyDemo_Replace_With_Your_Key' ? '✅' : '❌'} Gemini API: ${process.env.GEMINI_API_KEY ? 'configured' : 'NOT configured - set GEMINI_API_KEY in .env'}\n`);
+  console.log(`\n${process.env.GEMINI_API_KEY ? '✅' : '❌'} Gemini API: ${process.env.GEMINI_API_KEY ? 'configured' : 'NOT configured — set GEMINI_API_KEY'}\n`);
 });

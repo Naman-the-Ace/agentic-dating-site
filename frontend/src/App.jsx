@@ -87,7 +87,7 @@ function AppContent() {
 
   // Load counts
   useEffect(() => {
-    fetch('http://localhost:3001/api/health')
+    fetch('/api/health')
       .then(r => r.json())
       .then(d => {
         setCounts({ people: d.people_count || 0, conversations: d.conversations_count || 0 });
@@ -147,18 +147,42 @@ function AppContent() {
             <span style={{ color: 'var(--accent-purple)', fontWeight: 600 }}>Gemini 2.5 Flash</span>
             {' '}· Google AI
           </div>
+          <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border)', fontSize: '0.68rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
+            ⚖️ AI Simulation: Dating dialogues and compatibility scores are autonomous AI simulations.
+          </div>
         </div>
       </aside>
 
       {/* Main */}
-      <main className="main-content" style={{ position: 'relative', zIndex: 1 }}>
-        <Routes>
-          <Route path="/" element={<HomePage onCountChange={setCounts} />} />
-          <Route path="/profiles" element={<ProfilesPage />} />
-          <Route path="/profiles/:id" element={<ProfileDetailPage />} />
-          <Route path="/dating" element={<DatingPage />} />
-          <Route path="/rankings" element={<RankingsPage />} />
-        </Routes>
+      <main className="main-content" style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<HomePage onCountChange={setCounts} />} />
+            <Route path="/profiles" element={<ProfilesPage />} />
+            <Route path="/profiles/:id" element={<ProfileDetailPage />} />
+            <Route path="/dating" element={<DatingPage />} />
+            <Route path="/rankings" element={<RankingsPage />} />
+          </Routes>
+        </div>
+        <footer style={{
+          padding: '20px 40px',
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: 12,
+          fontSize: '0.78rem',
+          color: 'var(--text-muted)',
+          background: 'rgba(10, 10, 15, 0.4)'
+        }}>
+          <div>
+            <strong style={{ color: 'var(--text-secondary)' }}>AgentDate</strong> — Autonomous Multi-Agent Matchmaking System
+          </div>
+          <div style={{ maxWidth: 580, textAlign: 'right' }}>
+            ⚖️ <em>Disclaimer: All dating conversations and compatibility evaluations are autonomous AI-generated simulations for entertainment and research, not statements of real individuals' personal views or participation.</em>
+          </div>
+        </footer>
       </main>
 
       {/* Toasts */}

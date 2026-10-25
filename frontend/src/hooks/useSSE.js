@@ -1,7 +1,8 @@
 // hooks/useSSE.js — Real-time Server-Sent Events hook
-import { useEffect, useRef, useCallback } from 'react';
+// API_BASE: empty string = same-origin (works in both dev via Vite proxy and production via Express)
+import { useEffect, useRef } from 'react';
 
-const API_BASE = 'http://localhost:3001';
+const API_BASE = '';
 
 export function useSSE(onMessage) {
   const esRef = useRef(null);
@@ -9,28 +10,35 @@ export function useSSE(onMessage) {
   onMessageRef.current = onMessage;
 
   useEffect(() => {
-    const es = new EventSource(`${API_BASE}/api/events`);
-    esRef.current = es;
+    let retryTimer = null;
 
-    es.onmessage = (e) => {
-      try {
-        const data = JSON.parse(e.data);
-        onMessageRef.current(data);
-      } catch {}
-    };
+    function connect() {
+      const es = new EventSource(`${API_BASE}/api/events`);
+      esRef.current = es;
 
-    es.onerror = () => {
-      es.close();
-      // Reconnect after 3s
-      setTimeout(() => {
-        if (esRef.current === es) {
-          esRef.current = null;
-        }
-      }, 3000);
-    };
+      es.onmessage = (e) => {
+        try {
+          const data = JSON.parse(e.data);
+          onMessageRef.current(data);
+        } catch {}
+      };
+
+      es.onerror = () => {
+        es.close();
+        esRef.current = null;
+        // Reconnect after 3s
+        retryTimer = setTimeout(connect, 3000);
+      };
+    }
+
+    connect();
 
     return () => {
-      es.close();
+      clearTimeout(retryTimer);
+      if (esRef.current) {
+        esRef.current.close();
+        esRef.current = null;
+      }
     };
   }, []);
 }

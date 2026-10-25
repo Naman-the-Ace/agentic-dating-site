@@ -1,6 +1,8 @@
 // agent.js — AI agent logic using Google Gemini
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 
 const GEMINI_KEY = process.env.GEMINI_API_KEY || '';
 const genAI = GEMINI_KEY ? new GoogleGenerativeAI(GEMINI_KEY) : null;
@@ -79,30 +81,54 @@ function generateMockAnalysis(linkedinData, instagramData) {
 
 function generateMockConversation(personAName, personBName, personAAnalysis, personBAnalysis) {
   const aHobby = (personAAnalysis.hobbies || ['exploring'])[0];
+  const bHobby = (personBAnalysis.hobbies || ['creating'])[0];
   const bInterest = (personBAnalysis.interests || ['ideas'])[0];
-  const aVibe = personAAnalysis.vibe || 'curious';
-  const bVibe = personBAnalysis.vibe || 'thoughtful';
+  const aInterest = (personAAnalysis.interests || ['technology'])[0];
+  const aValue = (personAAnalysis.values || ['authenticity'])[0];
+  const bValue = (personBAnalysis.values || ['growth'])[0];
+  const aField = (personAAnalysis.professional_domain || 'work').split(' ')[0];
+  const bField = (personBAnalysis.professional_domain || 'work').split(' ')[0];
   
   return [
     {
       sender: personAName,
-      text: `Hey ${personBName}! I saw you're into ${bInterest.toLowerCase()} — that's something I've been thinking a lot about lately. What got you into it?`,
+      text: `Hey ${personBName}! I saw you're passionate about ${bInterest.toLowerCase()} — that's something I've been thinking a lot about through the lens of ${aField}. What originally drew you into that space?`,
     },
     {
       sender: personBName,
-      text: `Oh wow, small world! I started getting into it a few years back when I realized it connected everything I care about. Your work in ${personAAnalysis.professional_domain?.split(' ')[0] || 'your field'} sounds fascinating — how do you stay creative?`,
+      text: `Oh, what a great opening line! Honestly, it started when I realized ${bInterest.toLowerCase()} connects everything I care about — ${bValue.toLowerCase()} being at the core. Your work in ${aField} sounds fascinating. What does a typical day look like for you?`,
     },
     {
       sender: personAName,
-      text: `Honestly? ${aHobby} keeps me sane. There's something about stepping away from screens and just being present. What's your go-to way to recharge?`,
+      text: `Ha — no typical days, that's the beauty of it! I find ${aHobby.toLowerCase()} keeps me sane and creative. What's your go-to way to recharge when the world gets overwhelming?`,
     },
     {
       sender: personBName,
-      text: `I love that — I'm the same way. I find that my best ideas come when I'm not trying to think at all. Also, your point about being present... I feel like that's rare to find in someone. Are you always this self-aware? 😄`,
+      text: `${bHobby}! There's something magical about stepping back and just being present. I love that — it sounds like you're someone who values ${aValue.toLowerCase()} in how they show up. Is that right?`,
     },
     {
       sender: personAName,
-      text: `Ha! I try to be. I think it's important — especially in whatever relationship I'm in. I value ${(personAAnalysis.values || ['authenticity'])[0].toLowerCase()} above almost everything. What matters most to you?`,
+      text: `Completely. ${aValue} is non-negotiable for me — in work and in people I connect with. I'm curious: what's the belief you hold that most people around you would push back on?`,
+    },
+    {
+      sender: personBName,
+      text: `That's a bold question for message five! I love it. Honestly? I think ${bValue.toLowerCase()} is more important than almost any credential or achievement. People sleep on it. What about you?`,
+    },
+    {
+      sender: personAName,
+      text: `I think the most underrated skill is deep listening — actually hearing what someone means, not just what they say. It's rare. And you seem to have it. What do people consistently underestimate about you?`,
+    },
+    {
+      sender: personBName,
+      text: `Probably my patience. I come across as high-energy but I think in decades not quarters. What's the most exciting thing you're working on or thinking about right now?`,
+    },
+    {
+      sender: personAName,
+      text: `Right now I'm obsessed with how ${aInterest.toLowerCase()} is going to reshape everything we thought we knew about ${aField}. It's the kind of thing that keeps me up at night in the best way. Would love to hear your take on it sometime.`,
+    },
+    {
+      sender: personBName,
+      text: `I have a lot of thoughts on that — and I suspect we'd end up in a very long, very good conversation. Maybe that's reason enough to continue this elsewhere? 😊`,
     },
   ];
 }
@@ -322,51 +348,43 @@ async function runDatingConversation(personA, personB, onMessage) {
   const nameA = personA.analysis?.name || personA.name;
   const nameB = personB.analysis?.name || personB.name;
   
-  // Try AI conversation, fall back to mock
   let useAI = !!model;
   const conversation = [];
   
   try {
     if (useAI) {
-      // Opening message from A
+      // Turn 1: Opening message from A
       const opening = await generateOpeningMessage(personA, personB);
       const msg1 = { sender: nameA, sender_id: personA.id, text: opening, timestamp: Date.now() };
       conversation.push(msg1);
       if (onMessage) onMessage(msg1);
       await sleep(800);
 
-      // Reply from B
-      const reply1 = await generateReply(personB, personA, conversation);
-      const msg2 = { sender: nameB, sender_id: personB.id, text: reply1, timestamp: Date.now() };
-      conversation.push(msg2);
-      if (onMessage) onMessage(msg2);
-      await sleep(800);
-
-      // Follow-up from A
-      const followup1 = await generateReply(personA, personB, conversation);
-      const msg3 = { sender: nameA, sender_id: personA.id, text: followup1, timestamp: Date.now() };
-      conversation.push(msg3);
-      if (onMessage) onMessage(msg3);
-      await sleep(800);
-
-      // Reply from B
-      const reply2 = await generateReply(personB, personA, conversation);
-      const msg4 = { sender: nameB, sender_id: personB.id, text: reply2, timestamp: Date.now() };
-      conversation.push(msg4);
-      if (onMessage) onMessage(msg4);
-      await sleep(800);
-
-      // Closing from A
-      const closing = await generateReply(personA, personB, conversation);
-      const msg5 = { sender: nameA, sender_id: personA.id, text: closing, timestamp: Date.now() };
-      conversation.push(msg5);
-      if (onMessage) onMessage(msg5);
+      // Generate alternating replies for turns 2-10
+      const TOTAL_TURNS = 10;
+      for (let turn = 2; turn <= TOTAL_TURNS; turn++) {
+        const isAsTurn = turn % 2 !== 0; // odd = A, even = B
+        const speaker = isAsTurn ? personA : personB;
+        const listener = isAsTurn ? personB : personA;
+        const speakerName = isAsTurn ? nameA : nameB;
+        
+        const reply = await generateReply(speaker, listener, conversation);
+        const msg = { 
+          sender: speakerName, 
+          sender_id: speaker.id, 
+          text: reply, 
+          timestamp: Date.now() 
+        };
+        conversation.push(msg);
+        if (onMessage) onMessage(msg);
+        await sleep(700);
+      }
     } else {
       throw new Error('No AI model');
     }
   } catch (err) {
     console.log('Using mock conversation:', err.message);
-    // Use mock conversation
+    // Use extended mock conversation if no AI messages yet
     if (conversation.length === 0) {
       const mockMsgs = generateMockConversation(nameA, nameB, personA.analysis || {}, personB.analysis || {});
       for (const msg of mockMsgs) {
@@ -375,10 +393,11 @@ async function runDatingConversation(personA, personB, onMessage) {
           sender_id: msg.sender === nameA ? personA.id : personB.id,
           text: msg.text,
           timestamp: Date.now(),
+          is_mock: true,
         };
         conversation.push(fullMsg);
         if (onMessage) onMessage(fullMsg);
-        await sleep(600);
+        await sleep(500);
       }
     }
   }

@@ -15,8 +15,16 @@ AI agents built from LinkedIn + Instagram profiles date each other on your behal
 ---
 
 ## 2. Technical Section: LinkedIn & Instagram Scraping
-*(Strict Requirement: ≤ 500 words)*
 
+### Strict Form Entry (≤ 500 CHARACTERS)
+```text
+Our resilient pipeline extracts signals from public LinkedIn and Instagram profiles. For LinkedIn, it parses JSON-LD Person schemas and OpenGraph tags to extract career milestones, roles, and expertise. For Instagram, it queries public web profile endpoints and metadata to harvest bios, aesthetics, and post captions. Data is sanitized and fed into Gemini 2.5 Flash to synthesize psychological twins with zero hallucinated traits, backed by transparent provenance tracking and fallback mechanisms.
+```
+**Character count:** 498 characters (strictly within the 500-character limit).
+
+---
+
+### Extended Architectural Deep-Dive
 Our data ingestion pipeline extracts professional, social, and psychological signals from public LinkedIn and Instagram profiles using a resilient multi-strategy architecture designed to handle rate limiting and strict CORS/bot mitigation.
 
 ### LinkedIn Profile Scraping
@@ -34,9 +42,6 @@ Our data ingestion pipeline extracts professional, social, and psychological sig
 
 ### Graceful Fallback & Agent Ingestion
 Scraped raw text, structured metadata, and social tokens from both sources are normalized into a unified payload and fed into Google Gemini 2.5 Flash. If any public network request is blocked by regional anti-bot firewalls, our pipeline utilizes extracted URL slugs, verified public bios, and domain fallbacks to ensure uninterrupted agent generation and compatibility simulation.
-
----
-*(Word count: 377 words — well within the 500-word limit)*
 
 ---
 

@@ -80,16 +80,20 @@ flowchart TD
 ### 1. Overall Product Explanation
 *(Strict Requirement: ≤ 200 characters)*
 
-> **AI agents built from LinkedIn + Instagram profiles date each other on your behalf. Features real-time AI conversations, compatibility scoring, and matchmaking rankings for 25 verified public people.**
+> **AI agents created from LinkedIn and Instagram profiles date each other autonomously. Features live multi-turn dates, 4D compatibility evaluation, and rankings across 25 verified public profiles.**
 >
-> *(Length: 195 characters)*
+> *(Length: 194 characters — strictly verified)*
 
 ---
 
 ### 2. Technical Scraping Architecture
-*(Strict Requirement: ≤ 500 words)*
+*(Strict Requirement: ≤ 500 characters for competition entry)*
 
-Our data ingestion pipeline extracts professional, social, and psychological signals from public LinkedIn and Instagram profiles using a resilient multi-strategy architecture designed to handle rate limiting and strict CORS/bot mitigation.
+> **Our resilient pipeline extracts signals from public LinkedIn and Instagram profiles. For LinkedIn, it parses JSON-LD Person schemas and OpenGraph tags to extract career milestones, roles, and expertise. For Instagram, it queries public web profile endpoints and metadata to harvest bios, aesthetics, and post captions. Data is sanitized and fed into Gemini 2.5 Flash to synthesize psychological twins with zero hallucinated traits, backed by transparent provenance tracking and fallback mechanisms.**
+>
+> *(Length: 498 characters — strictly verified)*
+
+#### Detailed Multi-Strategy Scraping Architecture
 
 #### LinkedIn Profile Scraping
 1. **HTTP Emulation with Standardized Fingerprinting**: Requests to public LinkedIn profile URLs (`linkedin.com/in/{slug}`) are dispatched with modern Chrome user-agent strings, `Accept-Language: en-US,en;q=0.9`, and security headers (`sec-ch-ua`, `sec-fetch-dest: document`).
