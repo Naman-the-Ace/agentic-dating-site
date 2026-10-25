@@ -107,7 +107,6 @@ Our data ingestion pipeline extracts professional, social, and psychological sig
 #### Graceful Fallback & Agent Ingestion
 Scraped raw text, structured metadata, and social tokens from both sources are normalized into a unified payload and fed into Google Gemini 2.5 Flash. If any public network request is blocked by regional anti-bot firewalls, our pipeline utilizes extracted URL slugs, verified public bios, and domain fallbacks to ensure uninterrupted agent generation and compatibility simulation.
 
-*(Length: 377 words)*
 
 ---
 
