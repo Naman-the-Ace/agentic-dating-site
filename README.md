@@ -154,7 +154,7 @@ All 25 people feature verified public LinkedIn and public Instagram profiles:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/itsmehotpants/agentic-dating-site.git
+git clone https://github.com/Naman-the-Ace/agentic-dating-site.git
 cd agentic-dating-site
 ```
 
